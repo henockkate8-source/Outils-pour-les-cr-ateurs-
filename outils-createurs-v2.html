@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CréaBoost : titres, hashtags et idées pour créateurs</title>
+<meta name="description" content="Générateur gratuit de titres, accroches, descriptions, hashtags et idées de vidéos pour YouTube et TikTok.">
+<style>
+:root{--bg:#0b0b14;--card:#161626;--line:#262640;--txt:#f2f2fa;--mut:#9a9ab8;--g:linear-gradient(135deg,#ff2d75,#7a5cff 55%,#00d4ff)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.45}
+.hero{padding:34px 18px 22px;text-align:center;background:radial-gradient(circle at 50% 0,#3a1d6e55,transparent 70%)}
+.logo{font-size:1.9rem;font-weight:900;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mut);margin-top:6px;font-size:.95rem}
+.wrap{max-width:700px;margin:auto;padding:0 14px 30px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
+label{display:block;font-size:.8rem;color:var(--mut);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.05em}
+input[type=text]{width:100%;padding:14px;border-radius:12px;border:1px solid var(--line);background:#0f0f1c;color:var(--txt);font-size:1rem;outline:none}
+input[type=text]:focus{border-color:#7a5cff}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:8px 13px;border-radius:20px;border:1px solid var(--line);background:#0f0f1c;color:var(--txt);font-size:.88rem;cursor:pointer}
+.chip.on{background:var(--g);border-color:transparent;font-weight:700}
+.go{width:100%;margin-top:18px;padding:15px;border:none;border-radius:14px;background:var(--g);color:#fff;font-size:1.05rem;font-weight:800;cursor:pointer;box-shadow:0 6px 24px #7a5cff55}
+.go:active{transform:scale(.98)}
+#res{display:none}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:4px}
+.tab{padding:9px 14px;border-radius:12px;background:var(--card);border:1px solid var(--line);color:var(--mut);white-space:nowrap;font-size:.9rem;cursor:pointer}
+.tab.on{color:#fff;border-color:#7a5cff;background:#241d4a}
+.item{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:9px;font-size:.96rem}
+.item span{flex:1}
+.cp{flex:none;padding:7px 11px;border-radius:9px;border:1px solid #7a5cff;background:transparent;color:#b9a8ff;font-size:.8rem;cursor:pointer}
+.big{width:100%;min-height:200px;background:#0f0f1c;color:var(--txt);border:1px solid var(--line);border-radius:14px;padding:13px;font-size:.95rem;font-family:inherit;resize:vertical}
+.tags{background:#0f0f1c;border:1px solid var(--line);border-radius:14px;padding:14px;color:#8fd8ff;line-height:2;word-break:break-word}
+.more{width:100%;padding:12px;border-radius:12px;border:1px dashed #7a5cff;background:transparent;color:#b9a8ff;font-size:.95rem;margin-top:4px;cursor:pointer}
+.ad{border:1px dashed var(--line);border-radius:14px;text-align:center;color:var(--mut);padding:22px;font-size:.8rem;margin:16px 0}
+footer{text-align:center;color:var(--mut);font-size:.78rem;padding:10px 0 30px}
+.auth{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.abtn{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;border:none;font-size:.9rem;font-weight:700;cursor:pointer}
+.abtn.g{background:#fff;color:#222}
+.abtn.f{background:#1877f2;color:#fff}
+.abtn.o{background:transparent;border:1px solid var(--line);color:var(--mut)}
+.user{display:flex;align-items:center;gap:10px;justify-content:center;font-size:.92rem}
+.user img{width:34px;height:34px;border-radius:50%;object-fit:cover}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:#fff;color:#111;padding:10px 18px;border-radius:20px;font-weight:700;font-size:.9rem;transition:.25s;z-index:9}
+.toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="hero">
+<div class="logo">⚡ CréaBoost</div>
+<p>Titres, accroches, hashtags et idées pour YouTube et TikTok</p>
+<div class="auth" id="auth">
+<button class="abtn g" onclick="connexion('google')">🔵 Continuer avec Google</button>
+<button class="abtn f" onclick="connexion('facebook')">📘 Continuer avec Facebook</button>
+</div>
+</div>
+
+<div class="wrap">
+<div class="panel">
+<label>Sujet de ta vidéo</label>
+<input type="text" id="sujet" placeholder="Ex : recette de beignets, mon voyage à Kinshasa…">
+
+<label>Plateforme</label>
+<div class="chips" id="plat"></div>
+
+<label>Thème</label>
+<div class="chips" id="niche"></div>
+
+<label>Ton</label>
+<div class="chips" id="ton"></div>
+
+<button class="go" onclick="generer()">✨ Générer mon pack</button>
+</div>
+
+<div id="res">
+<div class="tabs" id="tabs"></div>
+<div id="out"></div>
+</div>
+
+<div class="ad">Espace publicitaire</div>
+</div>
+<footer>© CréaBoost · 100 % gratuit</footer>
+<div class="toast" id="toast">Copié ✓</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script>
+/* ====== CONNEXION GOOGLE / FACEBOOK (Firebase) ======
+   Remplace ces valeurs par celles de ton projet Firebase
+   (Paramètres du projet > Tes applications > Web). */
+const FIREBASE_CONFIG={
+ apiKey:"COLLE_ICI",
+ authDomain:"TON-PROJET.firebaseapp.com",
+ projectId:"TON-PROJET",
+ appId:"COLLE_ICI"
+};
+const AUTH_OK=FIREBASE_CONFIG.apiKey!=="COLLE_ICI";
+let fbAuth=null;
+if(AUTH_OK){
+ firebase.initializeApp(FIREBASE_CONFIG);
+ fbAuth=firebase.auth();
+ fbAuth.onAuthStateChanged(u=>{
+  const a=document.getElementById("auth");
+  if(u){
+   a.innerHTML=`<div class="user">${u.photoURL?`<img src="${u.photoURL}" alt="">`:""}<span>Salut ${(u.displayName||"créateur").split(" ")[0]} 👋</span><button class="abtn o" onclick="deconnexion()">Déconnexion</button></div>`;
+  }else{
+   a.innerHTML=`<button class="abtn g" onclick="connexion('google')">🔵 Continuer avec Google</button><button class="abtn f" onclick="connexion('facebook')">📘 Continuer avec Facebook</button>`;
+  }
+ });
+}
+function connexion(type){
+ if(!AUTH_OK){alert("La connexion sera bientôt disponible.");return}
+ const p=type==="google"?new firebase.auth.GoogleAuthProvider():new firebase.auth.FacebookAuthProvider();
+ fbAuth.signInWithPopup(p).catch(e=>alert("Connexion impossible : "+e.message));
+}
+function deconnexion(){fbAuth&&fbAuth.signOut()}
+</script>
+<script>
+const $=id=>document.getElementById(id);
+const sel={plat:"YouTube",niche:"Général",ton:"Accrocheur"};
+const OPT={
+ plat:["YouTube","TikTok"],
+ niche:["Général","Foi","Cuisine","Musique","Business","Vlog","Éducation","Humour","Beauté","Sport"],
+ ton:["Accrocheur","Sérieux","Fun","Mystère"]
+};
+Object.keys(OPT).forEach(k=>{
+ const c=$(k);
+ c.innerHTML=OPT[k].map(v=>`<div class="chip ${sel[k]===v?'on':''}" data-v="${v}">${v}</div>`).join("");
+ c.onclick=e=>{const v=e.target.dataset.v;if(!v)return;sel[k]=v;[...c.children].forEach(x=>x.classList.toggle("on",x.dataset.v===v))};
+});
+
+/* ====== CONTENU ====== */
+const TITRES_GEN=[
+ "{s} : ce que personne ne te dit","Comment réussir {s} en 5 minutes","{s} : j'ai testé, voici le résultat",
+ "Les 5 erreurs à éviter avec {s}","{s} pour débutants (guide complet)","Pourquoi {s} change tout",
+ "{s} : la vérité enfin révélée","{s} étape par étape, sans stress","Tu fais {s} de la mauvaise façon !",
+ "J'ai essayé {s} pendant 7 jours","{s} : avant / après","Tout ce qu'il faut savoir sur {s}",
+ "{s} : 3 astuces que tu dois connaître","Arrête tout et regarde ça : {s}","{s} : le guide ultime"
+];
+const TITRES_NICHE={
+ "Foi":["{s} : un message de Dieu pour toi","{s} : ce que la Bible dit vraiment","Prière puissante pour {s}","{s} : la promesse que tu dois recevoir","Dieu te parle à travers {s}"],
+ "Cuisine":["{s} : la recette facile et délicieuse","{s} comme au restaurant, chez toi","{s} : le secret de la sauce parfaite","{s} en 15 minutes seulement","La meilleure recette de {s}"],
+ "Musique":["{s} : la chanson qui fait le buzz","Écoute {s} jusqu'à la fin","{s} : reprise inattendue","Comment jouer {s} facilement","{s} : l'histoire derrière le tube"],
+ "Business":["{s} : comment gagner de l'argent en 2026","{s} : l'idée de business à lancer maintenant","Comment j'ai démarré {s} avec 0 $","{s} : la méthode que les riches utilisent","{s} : erreurs qui font perdre de l'argent"],
+ "Vlog":["Une journée avec moi : {s}","{s} : mon quotidien sans filtre","Vlog {s} : ça ne s'est pas passé comme prévu","{s} : je vous emmène avec moi","{s} : ma vraie vie"],
+ "Éducation":["{s} expliqué simplement","{s} : apprends-le en 10 minutes","{s} : le cours complet gratuit","Comprendre {s} enfin !","{s} : les bases à connaître"],
+ "Humour":["{s} : j'ai failli mourir de rire","{s} : quand ça tourne mal","Si {s} était une personne","{s} : les gens vs la réalité","{s} : impossible de ne pas rire"],
+ "Beauté":["{s} : la routine qui change tout","{s} : mes secrets de beauté","{s} : avant / après incroyable","{s} : astuce simple, résultat top","{s} : le look parfait en 10 minutes"],
+ "Sport":["{s} : l'entraînement complet","{s} : transforme ton corps en 30 jours","{s} : les erreurs qui bloquent tes progrès","{s} : exercice simple à la maison","{s} : le programme des champions"]
+};
+const EMO=["🔥","😱","✅","💡","👀","🚀","⚡","🤯"];
+const TON_PREFIX={"Accrocheur":["",""],"Sérieux":["",""],"Fun":["😂 ","🤪 "],"Mystère":["🤫 ","⚠️ "]};
+const HOOKS=[
+ "Attends… avant de passer, regarde ça !","Personne ne te dit ça sur {s}.","Si tu fais {s}, écoute-moi bien.",
+ "J'ai découvert quelque chose d'incroyable sur {s}.","Stop ! Tu fais {s} dans le mauvais sens.",
+ "En 30 secondes, je te montre {s}.","90 % des gens ratent {s}. Pas toi après cette vidéo.",
+ "Voici comment j'ai changé ma vie avec {s}.","Tu ne vas pas croire ce qui se passe avec {s}.","Un seul conseil sur {s} et tout change."
+];
+const IDEES=[
+ "Raconte ton histoire personnelle avec {s}","Les 5 erreurs les plus courantes sur {s}","Réagis à une vidéo virale sur {s}",
+ "Défi de 7 jours sur {s}","Réponds aux questions de tes abonnés sur {s}","Avant / après avec {s}",
+ "Les mythes sur {s} (vrai ou faux)","Ma routine quotidienne autour de {s}","Débutant vs expert : {s}",
+ "Les 3 outils gratuits pour {s}","Mon plus gros échec avec {s}","Ce que j'aurais aimé savoir sur {s}",
+ "Série en 5 épisodes sur {s}","Coulisses : comment je prépare {s}","Compare 2 méthodes pour {s}"
+];
+const TAGS={
+ "Général":["viral","pourtoi","tendance","fyp","explore"],
+ "Foi":["foi","priere","bible","jesus","dieu","versetdujour","chretien","gospel"],
+ "Cuisine":["cuisine","recette","food","delicieux","cuisineafricaine","faitmaison"],
+ "Musique":["musique","music","chanson","artiste","gospel","afrobeat","rumba"],
+ "Business":["argent","business","entrepreneur","gagnerdelargent","motivation","succes"],
+ "Vlog":["vlog","quotidien","lifestyle","dayinmylife","monquotidien"],
+ "Éducation":["apprendre","tuto","education","astuces","formation","savoir"],
+ "Humour":["humour","drole","rire","comedie","blague","mdr"],
+ "Beauté":["beaute","makeup","coiffure","skincare","glow","style"],
+ "Sport":["sport","fitness","entrainement","musculation","motivation","santé"]
+};
+const CTA={
+ "Accrocheur":"👉 Abonne-toi et active la 🔔 pour ne rien rater !",
+ "Sérieux":"Abonnez-vous pour recevoir nos prochaines vidéos.",
+ "Fun":"Abonne-toi, c'est gratuit et ça fait plaisir à ton créateur préféré 😎",
+ "Mystère":"La suite arrive bientôt… abonne-toi pour ne pas la manquer 👀"
+};
+
+/* ====== UTILITAIRES ====== */
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+const clean=t=>t.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9]/g,"").toLowerCase();
+function toast(){const t=$("toast");t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1100)}
+function copier(txt){(navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).catch(()=>{const a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();document.execCommand("copy");a.remove()}).finally?.(toast);toast()}
+window.copier=copier;
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+
+let S="",tab="Titres";
+const TABS=["Titres","Accroches","Description","Hashtags","Idées"];
+
+function listeItems(arr){return arr.map(t=>`<div class="item"><span>${t}</span><button class="cp" data-t="${t.replace(/"/g,'&quot;')}">Copier</button></div>`).join("")}
+
+function titres(){
+ const pool=[...(TITRES_NICHE[sel.niche]||[]),...TITRES_GEN];
+ return shuffle(pool).slice(0,7).map(t=>TON_PREFIX[sel.ton][Math.random()<.5?0:1]+cap(t.replace("{s}",S))+" "+rnd(EMO));
+}
+function accroches(){return shuffle(HOOKS).slice(0,6).map(h=>h.replace("{s}",S))}
+function idees(){return shuffle(IDEES).slice(0,8).map(h=>"💡 "+h.replace("{s}",S))}
+function hashtags(){
+ const mots=S.split(/\s+/).map(clean).filter(w=>w.length>3);
+ let t=[...mots,clean(S),...shuffle(TAGS[sel.niche]).slice(0,5),...shuffle(TAGS["Général"]).slice(0,2)];
+ t.push(sel.plat==="TikTok"?"foryou":"youtube");
+ return [...new Set(t.filter(Boolean))].slice(0,13).map(x=>"#"+x);
+}
+function description(){
+ const h=hashtags().join(" ");
+ if(sel.plat==="TikTok")return `${rnd(HOOKS).replace("{s}",S)} 🔥\n\nDis-moi en commentaire ce que tu en penses 👇\n${CTA[sel.ton]}\n\n${h}`;
+ return `Dans cette vidéo, on parle de ${S}.\n\n${CTA[sel.ton]}\n👍 Mets un like si la vidéo t'a aidé\n💬 Dis-moi en commentaire ce que tu veux voir ensuite\n🔁 Partage à un ami que ça peut aider\n\n⏱️ Chapitres :\n00:00 Introduction\n01:00 L'essentiel\n04:00 Conseils pratiques\n07:00 Conclusion\n\n${h}`;
+}
+
+function render(fresh){
+ $("tabs").innerHTML=TABS.map(t=>`<div class="tab ${t===tab?'on':''}" data-tab="${t}">${t}</div>`).join("");
+ let html="";
+ if(tab==="Titres"||tab==="Accroches"||tab==="Idées"){
+  const f={Titres:titres,Accroches:accroches,"Idées":idees}[tab];
+  html=listeItems(f())+`<button class="more" data-more="1">🔄 Générer d'autres</button>`;
+ }else if(tab==="Description"){
+  html=`<textarea class="big" id="dtxt">${description()}</textarea><button class="go" style="margin-top:10px" data-copy="dtxt">Copier la description</button><button class="more" data-more="1">🔄 Une autre version</button>`;
+ }else{
+  const h=hashtags().join(" ");
+  html=`<div class="tags" id="htxt">${h}</div><button class="go" style="margin-top:10px" data-copy="htxt">Copier les hashtags</button><button class="more" data-more="1">🔄 D'autres hashtags</button>`;
+ }
+ $("out").innerHTML=html;
+}
+function generer(){
+ S=$("sujet").value.trim();
+ if(!S){$("sujet").focus();$("sujet").placeholder="⚠️ Écris d'abord ton sujet";return}
+ $("res").style.display="block";tab="Titres";render();
+ $("res").scrollIntoView({behavior:"smooth"});
+}
+window.generer=generer;
+$("res").addEventListener("click",e=>{
+ const t=e.target;
+ if(t.dataset.tab){tab=t.dataset.tab;render()}
+ else if(t.dataset.t){copier(t.dataset.t)}
+ else if(t.dataset.more){render()}
+ else if(t.dataset.copy){const el=$(t.dataset.copy);copier(el.value||el.innerText)}
+});
+$("sujet").addEventListener("keydown",e=>{if(e.key==="Enter")generer()});
+</script>
+</body>
+</html>
